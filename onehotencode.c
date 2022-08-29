@@ -102,7 +102,7 @@ int *onehotencode(int array[])
     {
         for (int j=0; i < num_categories; j++)
         {
-            if (p_original_array[i] = categories[j]) 
+            if (p_original_array[i] == categories[j]) 
             {
                 onehotencode_array[i][j] = 1;
             } else 

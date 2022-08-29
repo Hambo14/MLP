@@ -37,7 +37,7 @@ void free_array(Dynamic_Array *a)
 int * intdup(int const * src, size_t len)
 {
    int * p = malloc(len * sizeof(int));
-   if (!p && sizeof(int)) 
+   if (!p) 
    {
         printf("Memory allocation failed");
         exit(-1);
