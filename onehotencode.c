@@ -54,8 +54,8 @@ void quicksort(int array[], int first, int last)
 
 int *onehotencode(int array[]) 
 {
-    int *p_array = &array[0];
-    int length = (int) ( sizeof(p_array) / sizeof(array[0]));
+    int *p_array = array;
+    size_t length = (sizeof(*p_array) / sizeof(array[0]));
     int *p_original_array = intdup(p_array, length);
     //int original_array = *p_original_array;
     p_array = NULL;
@@ -96,18 +96,17 @@ int *onehotencode(int array[])
         p_unique_categories = NULL;
     }
 
-    // now onehotencode the data
-    int onehotencode_array[length][num_categories];
-    for (int i=0; i < length; i++)
+    // create 2d array on the heap for onehotecoding
+    int *onehotencode_array = calloc(length*num_categories,sizeof(int));
+
+    // now onehotencode
+    for (int i=0; i < num_categories; i++)
     {
-        for (int j=0; i < num_categories; j++)
+        for (int j=0; j < length; j++)
         {
-            if (p_original_array[i] = categories[j]) 
+            if (p_original_array[j] = categories[i]) 
             {
-                onehotencode_array[i][j] = 1;
-            } else 
-            {
-                onehotencode_array[i][j] = 0;
+                onehotencode_array[i*length + num_categories] = 1;
             }
         }
     }
@@ -118,14 +117,25 @@ int *onehotencode(int array[])
         p_original_array = NULL;
     }
 
-    int (*onehotencode_array)[][] = (&onehotencode_array)[length][num_categories];
-    return onehotencode_array;
+    return onehotencode_array; // *(*(onehotencode_array + i) + j)
 }
 
 int main()
 {
     int test_array[5] = {1,2,3,2,2};
-    onehotencode(test_array);
+    int *test_onehotencode = onehotencode(test_array);
+    if (test_onehotencode)
+    {
+        for(int i=0; i < 3; i++)
+        {
+            for (int j=0; j < 5; j++)
+            {
+                printf("%d",test_onehotencode[i*5 + 3]);
+            }
+        }
+
+        free(test_onehotencode);
+    }
 
     return 0;
 }
