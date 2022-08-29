@@ -1,21 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "dynamicArrays.h"
 
-typedef struct {
-    int *array;
-    size_t used;
-    size_t size;
-} Array;
+/* Implementation of a dynamic array class for all dynamic array uses */
 
-void initial_array(Array *a, size_t initial_size)
+void initial_array(Dynamic_Array *a, size_t initial_size)
 {
     a->array = malloc(initial_size*sizeof(int));
+    if (a->array == NULL)
+    {
+        printf("Memory allocation failed");
+        return;
+    }
     a->used = 0;
     a->size = initial_size;
 }
 
-void insert_array(Array *a, int element)
+void insert_array(Dynamic_Array *a, int element)
 {
     if (a->used == a->size) 
     {
@@ -25,11 +27,23 @@ void insert_array(Array *a, int element)
     a->array[a->used++] = element;
 }
 
-void free_array(Array *a)
+void free_array(Dynamic_Array *a)
 {
     free(a->array);
     a->array = NULL;
     a->used = a->size = 0;
+}
+
+int * intdup(int const * src, size_t len)
+{
+   int * p = malloc(len * sizeof(int));
+   if (!p && sizeof(int)) 
+   {
+        printf("Memory allocation failed");
+        exit(-1);
+   }
+   memcpy(p, src, len * sizeof(int));
+   return p;
 }
 
 int main()
