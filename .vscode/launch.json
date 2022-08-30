@@ -1,45 +1,17 @@
 {
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "(lldb) Attach",
-            "type": "lldb",
-            "request": "attach",
-            "program": "enter program name, for example ${workspaceFolder}/a.out"
-        },
-        {
-            "name": "C/C++: gcc build and debug active file",
-            "type": "lldb",
-            "request": "launch",
-            "program": "${fileDirname}/${fileBasenameNoExtension}",
-            "args": [],
-            "cwd": "${fileDirname}",
-            "preLaunchTask": "C/C++: gcc build active file"
-        },
-        {
-            "name": "C/C++ Runner: Debug Session",
-            "type": "cppdbg",
-            "request": "launch",
-            "args": [],
-            "stopAtEntry": true,
-            "externalConsole": false,
-            "cwd": "/Users/macbook/Documents/GitHub/MLP",
-            "program": "/Users/macbook/Documents/GitHub/MLP/build/Debug/outDebug",
-            "MIMode": "gdb",
-            "miDebuggerPath": "gdb"
-        },
-        {
-            "name": "C/C++: gcc build and debug active file",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "${fileDirname}/${fileBasenameNoExtension}",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${fileDirname}",
-            "environment": [],
-            "externalConsole": false,
-            "MIMode": "lldb",
-            "preLaunchTask": "C/C++: gcc build active file"
-        }
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "cppdbg",
+      "request": "launch",
+      "args": [],
+      "stopAtEntry": true,
+      "externalConsole": false,
+      "cwd": "/Users/macbook/Documents/GitHub/MLP",
+      "program": "/Users/macbook/Documents/GitHub/MLP/build/Debug/outDebug",
+      "MIMode": "gdb",
+      "miDebuggerPath": "gdb"
+    }
+  ]
 }
