@@ -105,7 +105,7 @@ int *onehotencode(int array[], size_t length)
         {
             if (p_original_array[i] == unique_categories.array[j]) 
             {
-                onehotencode_array[i*length + num_categories] = 1;
+                onehotencode_array[i*length + j] = 1;
             }
         }
     }
