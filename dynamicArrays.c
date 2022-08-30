@@ -46,11 +46,6 @@ int * intdup(int const * src, size_t len)
    return p;
 }
 
-int main()
-{
-
-    return 0;
-}
 
 
 

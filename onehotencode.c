@@ -52,13 +52,10 @@ void quicksort(int array[], int first, int last)
     }
 }
 
-int *onehotencode(int array[]) 
+int *onehotencode(int array[], size_t length) 
 {
-    int *p_array = array;
-    size_t length = (sizeof(*p_array) / sizeof(array[0]));
-    int *p_original_array = intdup(p_array, length);
+    int *p_original_array = intdup(array, length);
     //int original_array = *p_original_array;
-    p_array = NULL;
     int num_categories = 0;
 
     // Declare a dynamic array to append unique categories
@@ -83,6 +80,7 @@ int *onehotencode(int array[])
     }
 
     //  Create new array of just categories on the stack
+    /*
     int categories[num_categories];
     for (int i=0; i < num_categories; i++)
     {
@@ -95,6 +93,7 @@ int *onehotencode(int array[])
     {
         p_unique_categories = NULL;
     }
+    */
 
     // create 2d array on the heap for onehotecoding
     int *onehotencode_array = calloc(length*num_categories,sizeof(int));
@@ -104,14 +103,17 @@ int *onehotencode(int array[])
     {
         for (int j=0; j < length; j++)
         {
-            if (p_original_array[i] = categories[j]) 
+            if (p_original_array[i] == unique_categories.array[j]) 
             {
-                onehotencode_array[i][j] = 1;
-            } else 
-            {
-                onehotencode_array[i][j] = 0;
+                onehotencode_array[i*length + num_categories] = 1;
             }
         }
+    }
+
+    free_array(p_unique_categories);
+    if (p_unique_categories != NULL)
+    {
+        p_unique_categories = NULL;
     }
 
     if (p_original_array != NULL)
@@ -126,18 +128,15 @@ int *onehotencode(int array[])
 int main()
 {
     int test_array[5] = {1,2,3,2,2};
-    int *test_onehotencode = onehotencode(test_array);
-    if (test_onehotencode)
-    {
-        for(int i=0; i < 3; i++)
-        {
-            for (int j=0; j < 5; j++)
-            {
-                printf("%d",test_onehotencode[i*5 + 3]);
-            }
+    //int *p_test = &test_array;
+    size_t size_array = sizeof(test_array) / sizeof(test_array[0]);
+    int *p_test_array = &(test_array[0]);
+    int *testing = onehotencode(p_test_array, size_array);
+    for (int i=0; i<3; i++) {
+        for (int j=0; j<5; j++) {
+            printf("%i,",testing[i*5 + j]);
         }
-
-        free(test_onehotencode);
+        printf("\n");
     }
 
     return 0;
