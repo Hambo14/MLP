@@ -72,11 +72,8 @@ int *onehotencode(int array[], size_t length)
             insert_array(p_unique_categories, array[i]);
         }
     }
-    if (array[length-2] != array[length-1]) // if statement here to avoid checking inequality every iteration of i
-    {
-        num_categories++;
-        insert_array(p_unique_categories, array[length-1]);
-    }
+    num_categories++;
+    insert_array(p_unique_categories, array[length-1]);
 
     // create 2d array on the heap for onehotencoding
     int *onehotencode_array = calloc(length*num_categories,sizeof(int));
@@ -102,14 +99,14 @@ int *onehotencode(int array[], size_t length)
 
 int main()
 {
-    int test_array[5] = {1,2,3,2,2};
+    int test_array[20] = {1,4,4,3,2,5,2,3,1,1,4,3,2,2,4,5,1,1,4,2};
     size_t size_array = sizeof(test_array) / sizeof(test_array[0]);
    
     int *test_onehotencode = onehotencode(test_array, size_array);
 
-    for (int i = 0; i < 5; i++) {
-        for (int j = 0; j < 3; j++)
-            printf("%i ", test_onehotencode[i * 3 + j]);
+    for (size_t i = 0; i < size_array; i++) {
+        for (int j = 0; j < 5; j++)
+            printf("%i ", test_onehotencode[i * 5 + j]);
         printf("\n");
     }
     
