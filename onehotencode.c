@@ -55,17 +55,16 @@ void quicksort(int array[], int first, int last)
 int *onehotencode(int array[], size_t length) 
 {
     int *p_original_array = intdup(array, length);
-    //int original_array = *p_original_array;
     int num_categories = 0;
 
     // Declare a dynamic array to append unique categories
-    Dynamic_Array unique_categories;
+    Dynamic_Array unique_categories = {.array = NULL, .size = 0, .used = 0};
     Dynamic_Array *p_unique_categories = &unique_categories;
 
     // Sort array in ascending order using quicksort then extract unique values
     quicksort(array,0,length-1);
     initial_array(p_unique_categories, 10);
-    for (int i=0; i<=length-3; i++)
+    for (size_t i=0; i<=length-2; i++)
     {
         if (array[i] != array[i+1])
         {
@@ -79,65 +78,42 @@ int *onehotencode(int array[], size_t length)
         insert_array(p_unique_categories, array[length-1]);
     }
 
-    //  Create new array of just categories on the stack
-    /*
-    int categories[num_categories];
-    for (int i=0; i < num_categories; i++)
-    {
-        categories[i] = unique_categories.array[i];
-    }
-
-    // free the array on the heap
-    free_array(p_unique_categories);
-    if (p_unique_categories != NULL)
-    {
-        p_unique_categories = NULL;
-    }
-    */
-
-    // create 2d array on the heap for onehotecoding
+    // create 2d array on the heap for onehotencoding
     int *onehotencode_array = calloc(length*num_categories,sizeof(int));
 
     // now onehotencode
-    for (int i=0; i < num_categories; i++)
+    for (int i = 0; i < (int) length; i++)
     {
-        for (int j=0; j < length; j++)
+        for (int j = 0; j < num_categories; j++)
         {
-            if (p_original_array[i] == unique_categories.array[j]) 
+            if (p_original_array[i] == unique_categories.array[j])
             {
-                onehotencode_array[i*length + j] = 1;
+                onehotencode_array[i * num_categories + j] = 1;
             }
         }
     }
 
-    free_array(p_unique_categories);
-    if (p_unique_categories != NULL)
-    {
-        p_unique_categories = NULL;
-    }
+    free_array(p_unique_categories); free(p_original_array);
+    if (p_unique_categories != NULL) {p_unique_categories = NULL; }
+    if (p_original_array != NULL) {p_original_array = NULL;}
 
-    if (p_original_array != NULL)
-    {
-        free(p_original_array);
-        p_original_array = NULL;
-    }
-
-    return onehotencode_array; // *(*(onehotencode_array + i) + j)
+    return onehotencode_array;
 }
 
 int main()
 {
     int test_array[5] = {1,2,3,2,2};
-    //int *p_test = &test_array;
     size_t size_array = sizeof(test_array) / sizeof(test_array[0]);
-    int *p_test_array = &(test_array[0]);
-    int *testing = onehotencode(p_test_array, size_array);
-    for (int i=0; i<3; i++) {
-        for (int j=0; j<5; j++) {
-            printf("%i,",testing[i*5 + j]);
-        }
+   
+    int *test_onehotencode = onehotencode(test_array, size_array);
+
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 3; j++)
+            printf("%i ", test_onehotencode[i * 3 + j]);
         printf("\n");
     }
-
+    
+    free(test_onehotencode);
+    test_onehotencode = NULL;
     return 0;
 }
