@@ -1,13 +1,14 @@
+// INCLUDE LIBRARIES
 #include <stdio.h>
 #include <stdlib.h>
+
+// INCLUDE PROJECT MODULES
+#define VAR_ONEHOT
+#include "onehotencode.h"
 #include "dynamicArrays.h"
 
 // This file will hold all the preprocessing functions for the MLP such as
 // onehotencoding and normalisation of data.
-
-const int LENGTH = 3;
-const int ROW = 3;
-const int COLUMN = 3;
 
 /* Partition an array for quick sorting algorithm */
 int partition(int array[], int first, int last) 
@@ -101,15 +102,6 @@ int *onehotencode(int array[], size_t length)
     return onehotencode_array;
 }
 
-/*
-    *array    -- the value of the thing which array points to
-    array[0] -- same as *array
-    array    -- the location in memory of your thing
-    &array    -- the location in memory that is storing your pointer
-    &array[0] -- same as array
-    &array[n] -- the location of the nth element in your thing
-*/
-
 void normalise(float array[LENGTH][ROW][COLUMN])
 {
     // using min-max scaling
@@ -133,10 +125,4 @@ void normalise(float array[LENGTH][ROW][COLUMN])
                 array[i][j][k] = (array[i][j][k]-min)/(max-min);
         }
     }
-}
-
-int main()
-{
-    
-    return 0;
 }
