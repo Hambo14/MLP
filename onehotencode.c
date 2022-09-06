@@ -5,6 +5,10 @@
 // This file will hold all the preprocessing functions for the MLP such as
 // onehotencoding and normalisation of data.
 
+const int LENGTH = 3;
+const int ROW = 3;
+const int COLUMN = 3;
+
 /* Partition an array for quick sorting algorithm */
 int partition(int array[], int first, int last) 
 {
@@ -97,20 +101,42 @@ int *onehotencode(int array[], size_t length)
     return onehotencode_array;
 }
 
+/*
+    *array    -- the value of the thing which array points to
+    array[0] -- same as *array
+    array    -- the location in memory of your thing
+    &array    -- the location in memory that is storing your pointer
+    &array[0] -- same as array
+    &array[n] -- the location of the nth element in your thing
+*/
+
+void normalise(float array[LENGTH][ROW][COLUMN])
+{
+    // using min-max scaling
+    // x_scaled = (x - x_min)/(x_max - x_min)
+    // treat all entities as 1d arrays
+
+    float *p1 = &array[0][0][0];
+    float max = array[0][0][0], min = array[0][0][0];
+    while (p1 != (&array[0][0][0]+LENGTH*ROW*COLUMN))
+    {
+        if (*p1 > max)
+            max = *p1;
+        if (*p1 < min)
+            min = *p1;
+        p1++;
+    }
+
+    for (int i = 0; i < LENGTH; i++) {
+        for (int j = 0; j < ROW; j++) {
+            for (int k = 0; k < COLUMN; k++)
+                array[i][j][k] = (array[i][j][k]-min)/(max-min);
+        }
+    }
+}
+
 int main()
 {
-    int test_array[20] = {1,4,4,3,2,5,2,3,1,1,4,3,2,2,4,5,1,1,4,2};
-    size_t size_array = sizeof(test_array) / sizeof(test_array[0]);
-   
-    int *test_onehotencode = onehotencode(test_array, size_array);
-
-    for (size_t i = 0; i < size_array; i++) {
-        for (int j = 0; j < 5; j++)
-            printf("%i ", test_onehotencode[i * 5 + j]);
-        printf("\n");
-    }
     
-    free(test_onehotencode);
-    test_onehotencode = NULL;
     return 0;
 }
