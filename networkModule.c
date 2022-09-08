@@ -22,7 +22,11 @@ float relu(float x)
 
 float softmax(float x)
 {
+<<<<<<< Updated upstream
     return 1.0/(1.0 + exp((double) x));
+=======
+    return 1.0/(1.0 + exp(x));
+>>>>>>> Stashed changes
 }
 
 int main()
