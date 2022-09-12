@@ -63,22 +63,22 @@ int *onehotencode(int array[], size_t length)
     int num_categories = 0;
 
     // Declare a dynamic array to append unique categories
-    Dynamic_Array unique_categories = {.array = NULL, .size = 0, .used = 0};
-    Dynamic_Array *p_unique_categories = &unique_categories;
+    Int_Dynamic_Array unique_categories = {.array = NULL, .size = 0, .used = 0};
+    Int_Dynamic_Array *p_unique_categories = &unique_categories;
 
     // Sort array in ascending order using quicksort then extract unique values
     quicksort(array,0,length-1);
-    initial_array(p_unique_categories, 10);
+    int_initial_array(p_unique_categories, 10);
     for (size_t i=0; i<=length-2; i++)
     {
         if (array[i] != array[i+1])
         {
             num_categories++;
-            insert_array(p_unique_categories, array[i]);
+            int_insert_array(p_unique_categories, array[i]);
         }
     }
     num_categories++;
-    insert_array(p_unique_categories, array[length-1]);
+    int_insert_array(p_unique_categories, array[length-1]);
 
     // create 2d array on the heap for onehotencoding
     int *onehotencode_array = calloc(length*num_categories,sizeof(int));
@@ -95,7 +95,7 @@ int *onehotencode(int array[], size_t length)
         }
     }
 
-    free_array(p_unique_categories); free(p_original_array);
+    int_free_array(p_unique_categories); free(p_original_array);
     if (p_unique_categories != NULL) {p_unique_categories = NULL; }
     if (p_original_array != NULL) {p_original_array = NULL;}
 

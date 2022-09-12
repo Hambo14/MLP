@@ -5,7 +5,8 @@
 
 /* Implementation of a dynamic array class for all dynamic array uses */
 
-void initial_array(Dynamic_Array *a, size_t initial_size)
+// INTEGER ARRAYS
+void int_initial_array(Int_Dynamic_Array *a, size_t initial_size)
 {
     a->array = malloc(initial_size*sizeof(int));
     if (a->array == NULL)
@@ -17,7 +18,7 @@ void initial_array(Dynamic_Array *a, size_t initial_size)
     a->size = initial_size;
 }
 
-void insert_array(Dynamic_Array *a, int element)
+void int_insert_array(Int_Dynamic_Array *a, int element)
 {
     if (a->used == a->size) 
     {
@@ -27,13 +28,45 @@ void insert_array(Dynamic_Array *a, int element)
     a->array[a->used++] = element;
 }
 
-void free_array(Dynamic_Array *a)
+void int_free_array(Int_Dynamic_Array *a)
 {
     free(a->array);
     a->array = NULL;
     a->used = a->size = 0;
 }
 
+// DOUBLE ARRAYS: IDK IF THIS IS THE MOST EFFECTIVE METHOD OF DOING THIS
+// BUT IDC BECAUSE IM NOT A SMART PROGRAMMER
+void double_initial_array(Double_Dynamic_Array *a, size_t initial_size)
+{
+    a->array = malloc(initial_size*sizeof(double));
+    if (a->array == NULL)
+    {
+        printf("Memory allocation failed");
+        return;
+    }
+    a->used = 0;
+    a->size = initial_size;
+}
+
+void double_insert_array(Double_Dynamic_Array *a, double element)
+{
+    if (a->used == a->size) 
+    {
+        a->size *= 2;
+        a->array = realloc(a->array, a->size * sizeof(double));
+    }
+    a->array[a->used++] = element;
+}
+
+void double_free_array(Double_Dynamic_Array *a)
+{
+    free(a->array);
+    a->array = NULL;
+    a->used = a->size = 0;
+}
+
+// DUPLICATE AN INTEGER ARRAY
 int * intdup(int const * src, size_t len)
 {
    int * p = malloc(len * sizeof(int));
