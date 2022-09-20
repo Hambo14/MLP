@@ -105,6 +105,20 @@ void forward_propagation(Hidden_Layer *(layers)[], Double_Dynamic_Array input, s
     }
 }
 
+double *binary_cross_entropy(Double_Dynamic_Array *prediction, Int_Dynamic_Array *actual, size_t size, size_t classes)
+{
+    double loss = 0;
+    for (int i = 0; i < size; i++)
+    {
+        for (int j = 0; j < classes; j++)
+        {
+            loss += actual->array[i*classes + j] * log(prediction->array[i*classes + j]);
+        }
+    }
+    loss = -loss/size;
+    return &loss;
+}   
+
 int main()
 {
     srand(time(NULL));
@@ -115,7 +129,7 @@ int main()
 
     Hidden_Layer layers[4] = {layer1, layer2, layer3, layer4};
     Hidden_Layer *p_layers[4];
-    for (int i = 0; i < 4; i++) {p_layers[i] = (&layers)[0];}
+    for (int i = 0; i < 4; i++) {p_layers[i] = &layers[i];}
 
     size_t layer_num = 4;
 
@@ -128,19 +142,10 @@ int main()
     }
 
     forward_propagation(p_layers, test, 9, 4);
-    calculate_output(p_layers[0], &test, p_layers[0]->activation_function);
 
-    for (int i = 0; i < layer1.num_nodes; i++)
-        printf("%f ", p_layers[0]->output.array[i]);
+    for (int i = 0; i < layer4.num_nodes; i++)
+        printf("%f ", p_layers[3]->output.array[i]);
     printf("\n");
-
-    calculate_output(p_layers[1], &p_layers[0]->output, p_layers[1]->activation_function);
-
-    for (int i = 0; i < layer1.num_nodes; i++)
-        printf("%f ", p_layers[0]->output.array[i]);
-    printf("\n");
-
-    printf("%zu \n", p_layers[1]->input_size);
 
     double_free_array(&test);
     for (int i = 0; i < 4; i++) {free_hidden_layer(&(layers[i]));}
