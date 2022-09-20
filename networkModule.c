@@ -81,28 +81,27 @@ void calculate_output(Hidden_Layer *layer, Double_Dynamic_Array *input, char act
         for (int i = 0; i < layer->num_nodes; i++) {
             layer->output.array[i] = relu(layer->output.array[i]+layer->biases.array[i]);
         }
-    } else if (strcmp(activ_func, SOFTMAX)) {
+    } else if (strcmp(activ_func, SOFTMAX) == 0) {
         for (int i = 0; i < layer->num_nodes; i++) {
             layer->output.array[i] = softmax(layer->output.array[i]+layer->biases.array[i]);
         }
     }
 }
 
-void forward_propagation(Hidden_Layer layers[], Double_Dynamic_Array input, size_t input_size, size_t num_layers)
+void forward_propagation(Hidden_Layer *(layers)[], Double_Dynamic_Array input, size_t input_size, size_t num_layers)
 {
-    initiate_layer(&layers[0], layers[0].num_nodes, input_size);
-    randomise_weights_biases(&(layers[0]));
+    initiate_layer(layers[0], layers[0]->num_nodes, input_size);
+    randomise_weights_biases(layers[0]);
     for (int i = 1; i < num_layers; i++)
     {
-        initiate_layer(&layers[i], layers[i].num_nodes, layers[i-1].num_nodes);
-        randomise_weights_biases(&(layers[i]));
+        initiate_layer(layers[i], layers[i]->num_nodes, layers[i-1]->num_nodes);
+        randomise_weights_biases((layers[i]));
     }
 
-    calculate_output(&layers[0], &input, layers[0].activation_function);
-    for (int i = 0; i < num_layers - 1; i++)
+    calculate_output(layers[0], &input, layers[0]->activation_function);
+    for (int i = 0; i < (num_layers - 1); i++)
     {
-        Hidden_Layer previous_layer = layers[i], current_layer = layers[i+1];
-        calculate_output(&current_layer, &previous_layer.output, current_layer.activation_function);
+        calculate_output(layers[i+1], &layers[i]->output, layers[i+1]->activation_function);
     }
 }
 
@@ -115,6 +114,9 @@ int main()
     Hidden_Layer layer4 = {.activation_function = "relu", .num_nodes = 3};
 
     Hidden_Layer layers[4] = {layer1, layer2, layer3, layer4};
+    Hidden_Layer *p_layers[4];
+    for (int i = 0; i < 4; i++) {p_layers[i] = (&layers)[0];}
+
     size_t layer_num = 4;
 
     double test_input[9] = {0.4324,0.6832,0.4259,0.5283,0.5328,0.4292,0.0528,0.9832,0.2376};
@@ -124,12 +126,21 @@ int main()
     for (int i = 0; i < size_input; i++) {
         double_insert_array(&test, test_input[i]);
     }
-    initiate_layer(&layers[0], layers[0].num_nodes, size_input);
-    randomise_weights_biases(&layer1);
-    
+
+    forward_propagation(p_layers, test, 9, 4);
+    calculate_output(p_layers[0], &test, p_layers[0]->activation_function);
+
     for (int i = 0; i < layer1.num_nodes; i++)
-        printf("%f ", layer1.output.array[i]);
+        printf("%f ", p_layers[0]->output.array[i]);
     printf("\n");
+
+    calculate_output(p_layers[1], &p_layers[0]->output, p_layers[1]->activation_function);
+
+    for (int i = 0; i < layer1.num_nodes; i++)
+        printf("%f ", p_layers[0]->output.array[i]);
+    printf("\n");
+
+    printf("%zu \n", p_layers[1]->input_size);
 
     double_free_array(&test);
     for (int i = 0; i < 4; i++) {free_hidden_layer(&(layers[i]));}
